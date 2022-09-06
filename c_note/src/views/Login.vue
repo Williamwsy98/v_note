@@ -63,7 +63,7 @@ import {axGet} from '../ax/ax'
                     if(!this.flag) return                   
                 }
                 let obj = {
-                    path:'api/cloudnote/login',
+                    path:'index.php?c=login&a=login',
                     content:{
                         uname:this.unv.trim(),
                         upwd:this.pwv,

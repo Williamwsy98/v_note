@@ -101,7 +101,7 @@ export default {
                 if(localStorage['currentID']) this.currentID = Number(localStorage['currentID'])
                 if(this.currentID!=this.current.id){
                     this.obj = {
-                        path:'api/note/edit',
+                        path:'index.php?c=edit&a=render',
                         content:{
                             nid:this.current.id
                         }
@@ -204,13 +204,13 @@ export default {
             if(this.idel.length) this.obj.append('idel',JSON.stringify(this.idel))
             if(this.fdel.length) this.obj.append('fdel',JSON.stringify(this.fdel))
             this.obj1 = {
-                path:'api/note/edit',
+                path:'index.php?c=service&a=edit',
                 content:this.obj,
                 config:this.config
             }
             axPost(this.obj1)
             .then((res)=>{
-                if(res.data.occasion){
+                if(res.data){
                     alert('保存成功')
                     let result = JSON.parse(res.data.edited)[0]
                     result.fields.id = result.pk

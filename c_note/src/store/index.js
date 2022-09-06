@@ -19,7 +19,7 @@ export default new Vuex.Store({
   },
   mutations: {
     init(){
-      axGet({path:'api/cloudnote/hasSession'})
+      axGet({path:'index.php?c=login&a=hasSession'})
       .then((res)=>{
         if(res.data.session){
           if(!localStorage['user']) this.commit('getinfo',res.data.info)
@@ -66,9 +66,9 @@ export default new Vuex.Store({
     },
     to_page(s,index){
       s.obj = {
-        path:'api/note/',
+        path:'index.php?c=notes&a=render',
         content:{
-          page:index??1
+          pageno:index??1
         }
       }
       axGet(s.obj)
@@ -84,7 +84,7 @@ export default new Vuex.Store({
     },
     upload(s,fd){
       s.obj = {
-        path:'api/note/add',
+        path:'index.php?c=service&a=add',
         content:fd,
         config:s.config
       }
@@ -110,7 +110,7 @@ export default new Vuex.Store({
       let cf = confirm('确定要删除这篇笔记吗？')
       if(cf){
         s.obj = {
-          path:'api/note/del',
+          path:'index.php?c=service&a=del',
           content:{
             nid:s.current.id
           }
@@ -131,7 +131,7 @@ export default new Vuex.Store({
       }
     },
     quit(s){
-      axGet({path:'api/cloudnote/logout'})
+      axGet({path:'index.php?c=login&a=load'})
       .then(()=>{
           s.notes = []
           localStorage.clear()

@@ -63,8 +63,10 @@ import {axGet} from '../ax/ax'
                     if(!this.flag) return                   
                 }
                 let obj = {
-                    path:'index.php?c=login&a=login',
+                    path:'index.php',
                     content:{
+                        c:'login',
+                        a:'login',
                         uname:this.unv.trim(),
                         upwd:this.pwv,
                         is_memory:this.isMemory?1:0

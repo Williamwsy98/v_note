@@ -18,8 +18,16 @@ export default new Vuex.Store({
     pageno:localStorage['pageno']??1
   },
   mutations: {
-    init(){
-      axGet({path:'index.php?c=login&a=hasSession'})
+    init(s){
+      s.obj = {
+        path:'index.php',
+        content:{
+          c:'login',
+          a:'hasSession',
+          nid:s.current.id
+        }
+      }
+      axGet(s.obj)
       .then((res)=>{
         if(res.data.session){
           if(!localStorage['user']) this.commit('getinfo',res.data.info)
@@ -66,8 +74,10 @@ export default new Vuex.Store({
     },
     to_page(s,index){
       s.obj = {
-        path:'index.php?c=notes&a=render',
+        path:'index.php',
         content:{
+          c:'notes',
+          a:'render',
           pageno:index??1
         }
       }
@@ -83,8 +93,10 @@ export default new Vuex.Store({
       })
     },
     upload(s,fd){
+      fd.append('c','service')
+      fd.append('a','add')
       s.obj = {
-        path:'index.php?c=service&a=add',
+        path:'index.php',
         content:fd,
         config:s.config
       }
@@ -110,8 +122,10 @@ export default new Vuex.Store({
       let cf = confirm('确定要删除这篇笔记吗？')
       if(cf){
         s.obj = {
-          path:'index.php?c=service&a=del',
+          path:'index.php',
           content:{
+            c:'service',
+            a:'del',
             nid:s.current.id
           }
         }
@@ -131,7 +145,14 @@ export default new Vuex.Store({
       }
     },
     quit(s){
-      axGet({path:'index.php?c=login&a=load'})
+      s.obj = {
+        path:'index.php',
+        content:{
+          c:'login',
+          a:'load'
+        }
+      }
+      axGet(s.obj)
       .then(()=>{
           s.notes = []
           localStorage.clear()

@@ -101,8 +101,10 @@ export default {
                 if(localStorage['currentID']) this.currentID = Number(localStorage['currentID'])
                 if(this.currentID!=this.current.id){
                     this.obj = {
-                        path:'index.php?c=edit&a=render',
+                        path:'index.php',
                         content:{
+                            c:'edit',
+                            a:'render',
                             nid:this.current.id
                         }
                     }
@@ -203,8 +205,10 @@ export default {
             }
             if(this.idel.length) this.obj.append('idel',JSON.stringify(this.idel))
             if(this.fdel.length) this.obj.append('fdel',JSON.stringify(this.fdel))
+            this.obj.append('c','service')
+            this.obj.append('a','edit')
             this.obj1 = {
-                path:'index.php?c=service&a=edit',
+                path:'index.php',
                 content:this.obj,
                 config:this.config
             }

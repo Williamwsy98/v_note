@@ -112,6 +112,7 @@ export default {
                     // this.obj = JSON.parse(res.data.images)
                     this.obj = res.data.images
                     for(let i in this.obj){
+                        this.obj[i].src = `media/${this.obj[i].src}`
                         this.obj1 = {
                             id:this.obj[i].id,
                             fields:this.obj[i],
@@ -122,6 +123,7 @@ export default {
                     // this.obj = JSON.parse(res.data.files)
                     this.obj = res.data.files
                     for(let f in this.obj){
+                        this.obj[f].src = `media/${this.obj[f].src}`
                         this.obj1 = {
                             id:this.obj[f].id,
                             fields:this.obj[f],
@@ -180,7 +182,7 @@ export default {
             this.obj.append('uid',this.user.id)
             this.obj.append('title',this.title)
             this.obj.append('content',this.$refs.content.innerHTML)
-            for(let f in this.file_list) this.obj.append('file',this.file_list[f].file)
+            for(let f in this.file_list) this.obj.append('file[]',this.file_list[f].file)
             this.upload(this.obj)
         },
         edit(){
@@ -188,7 +190,7 @@ export default {
             this.obj.append('nid',this.current.id)
             this.obj.append('title',this.title)
             this.obj.append('content',this.$refs.content.innerHTML)
-            for(let f in this.file_list) this.obj.append('file',this.file_list[f].file)
+            for(let f in this.file_list) this.obj.append('file[]',this.file_list[f].file)
             for(let i in this.ilist) {
                 if(this.ilist[i].isSelected) this.idel.push(this.ilist[i].id)
             }
@@ -206,6 +208,7 @@ export default {
             .then((res)=>{
                 if(res.data){
                     alert('保存成功')
+                    console.log(res.data)
                     this.init(1)
                 }else {
                     alert('没有修改内容')

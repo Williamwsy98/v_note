@@ -67,6 +67,7 @@ export default new Vuex.Store({
     save(s){
       localStorage['route'] = s.route
       localStorage['current'] = JSON.stringify(s.current)
+      localStorage['notes'] = JSON.stringify(s.notes)
     },
     access(){
       this.commit('to_page')
@@ -93,10 +94,8 @@ export default new Vuex.Store({
       })
     },
     upload(s,fd){
-      fd.append('c','service')
-      fd.append('a','add')
       s.obj = {
-        path:'index.php',
+        path:'index.php?c=service&a=add',
         content:fd,
         config:s.config
       }
@@ -109,11 +108,11 @@ export default new Vuex.Store({
       })
     },
     update_current(s,obj){
+      s.current = obj
       for(let n in s.notes){
         if(s.notes[n].id==s.current.id){
           s.notes[n] = obj
-          localStorage['notes'] = JSON.stringify(s.notes)
-          localStorage['currentID'] = '0'
+          this.commit('save')
           break
         }
       }

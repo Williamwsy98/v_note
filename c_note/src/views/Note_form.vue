@@ -23,7 +23,7 @@
                 <span>第</span>
                 <input class='pg' type='text' :value='pageno' @keydown.enter.prevent='cg_page($refs.pageno.value)' ref='pageno'>
                 <span>/{{this.count}}页</span>
-                <div class='nf_btn' @click='cg_page(pageno+1)' v-if='pageno!=count'>下一页</div>
+                <div class='nf_btn' @click='cg_page(Number(pageno)+1)' v-if='pageno!=count'>下一页</div>
                 <div class='nf_btn' @click='r_push("menu")'>返回</div>
             </div>
         </div>

@@ -93,51 +93,43 @@ export default {
             this.flist = []
             this.file_list = []
             if(this.route){
-                this.title = this.current.title
                 if(flag){
                     this.btn_v = '编辑'
                     this.isEdit = false
                 }
-                if(localStorage['currentID']) this.currentID = Number(localStorage['currentID'])
-                if(this.currentID!=this.current.id){
-                    this.obj = {
-                        path:'index.php',
-                        content:{
-                            c:'edit',
-                            a:'render',
-                            nid:this.current.id
-                        }
+                this.obj = {
+                    path:'index.php',
+                    content:{
+                        c:'edit',
+                        a:'render',
+                        nid:this.current.id
                     }
-                    axGet(this.obj)
-                    .then((res)=>{
-                        // this.obj = JSON.parse(res.data.images)
-                        this.obj = res.data.images
-                        for(let i in this.obj){
-                            this.obj1 = {
-                                id:this.obj[i].id,
-                                fields:this.obj[i],
-                                isSelected:false
-                            }
-                            this.ilist.push(this.obj1)
-                        }
-                        // this.obj = JSON.parse(res.data.files)
-                        this.obj = res.data.files
-                        for(let f in this.obj){
-                            this.obj1 = {
-                                id:this.obj[f].id,
-                                fields:this.obj[f],
-                                isSelected:false
-                            }
-                            this.flist.push(this.obj1)
-                        }
-                        localStorage['currentID'] = JSON.stringify(this.current.id)
-                        localStorage['ilist'] = JSON.stringify(this.ilist)
-                        localStorage['flist'] = JSON.stringify(this.flist)
-                    })
-                }else {
-                    this.ilist = JSON.parse(localStorage['ilist'])
-                    this.flist = JSON.parse(localStorage['flist'])
                 }
+                axGet(this.obj)
+                .then((res)=>{
+                    this.update_current(res.data.note)
+                    this.title = this.current.title
+                    // this.obj = JSON.parse(res.data.images)
+                    this.obj = res.data.images
+                    for(let i in this.obj){
+                        this.obj1 = {
+                            id:this.obj[i].id,
+                            fields:this.obj[i],
+                            isSelected:false
+                        }
+                        this.ilist.push(this.obj1)
+                    }
+                    // this.obj = JSON.parse(res.data.files)
+                    this.obj = res.data.files
+                    for(let f in this.obj){
+                        this.obj1 = {
+                            id:this.obj[f].id,
+                            fields:this.obj[f],
+                            isSelected:false
+                        }
+                        this.flist.push(this.obj1)
+                    }
+                })
             }
         },
         insert(){
@@ -205,10 +197,8 @@ export default {
             }
             if(this.idel.length) this.obj.append('idel',JSON.stringify(this.idel))
             if(this.fdel.length) this.obj.append('fdel',JSON.stringify(this.fdel))
-            this.obj.append('c','service')
-            this.obj.append('a','edit')
             this.obj1 = {
-                path:'index.php',
+                path:'index.php?c=service&a=edit',
                 content:this.obj,
                 config:this.config
             }
@@ -216,9 +206,6 @@ export default {
             .then((res)=>{
                 if(res.data){
                     alert('保存成功')
-                    let result = JSON.parse(res.data.edited)[0]
-                    result.fields.id = result.pk
-                    this.update_current(result.fields)
                     this.init(1)
                 }else {
                     alert('没有修改内容')
